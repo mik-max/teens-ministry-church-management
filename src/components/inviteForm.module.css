@@ -1,0 +1,17 @@
+.form{
+     display: flex;
+     width: 100%;
+     min-width: 560px;
+     flex-direction: column !important;
+     gap: 2rem;
+     padding: 30px 10px 20px;
+}
+.title{
+   padding: 20px 0px 0px ;
+   text-transform: uppercase;
+}
+.cancelBtn{
+     color: white !important;
+     background-color: red !important;
+     
+}

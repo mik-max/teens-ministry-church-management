@@ -1,6 +1,9 @@
 import { useCallback, useState } from 'react';
 import Head from 'next/head';
 import NextLink from 'next/link';
+
+
+import { useAuthContext } from 'src/contexts/auth-context';
 import { useRouter } from 'next/navigation';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
@@ -19,14 +22,64 @@ import {
 import { useAuth } from 'src/hooks/use-auth';
 import { Layout as AuthLayout } from 'src/layouts/auth/layout';
 
+
 const Page = () => {
   const router = useRouter();
   const auth = useAuth();
   const [method, setMethod] = useState('email');
+
+  const [isLoading, setIsLoading] = useState(false)
+
+//   const signIn =  (email, password) => {
+//      e.preventDefault();
+//      if(email.value != ''  && password.value != ''){
+
+//           let payload = {
+//                email: email.value,
+//                password: password.value
+//           }
+//           loader.classList.remove('hideLoader')
+//           fetch(`${DEVBASEURL}/api/v1/user/login`, {
+//                method: 'POST',
+//                headers: {
+//                     'Accept': 'application/json',
+//                     'Access-Control-Allow-Origin': '*',
+//                     'Content-Type': 'application/json'
+//                },
+//                body: JSON.stringify(payload)
+//           }).then(response => {return response.json()}).then((data) => {
+//                if(data.status == 'Ok'){
+//                     setAlertText(data.message);
+//                     setAlertTitle('Success!');
+//                     setIsLoading(false);
+//                     setShowAlert(true);
+//                     localStorage.setItem('token', data.data.token)
+//                     localStorage.setItem('claims', JSON.stringify(data.data.claims))
+//                     email.value = '';  password.value = '';
+                   
+//                }else{ 
+//                     setAlertText(data.message);
+//                     setAlertTitle('Error!');
+//                     setIsLoading(false);
+//                     setShowAlert(true);
+//                }
+               
+//           }).catch(e => {
+//                return e.message
+//           })
+//      }else{
+//           setIsLoading(false)
+//                setAlertText("Kindly fill out all fields.");
+//                setAlertTitle('Incomplete! 😒');
+
+//                setShowAlert(true)
+//      }
+
+//   };
   const formik = useFormik({
     initialValues: {
-      email: 'demo@devias.io',
-      password: 'Password123!',
+      email: '',
+      password: '',
       submit: null
     },
     validationSchema: Yup.object({
@@ -42,8 +95,8 @@ const Page = () => {
     }),
     onSubmit: async (values, helpers) => {
       try {
-        await auth.signIn(values.email, values.password);
-        router.push('/');
+          await auth.signIn(values.email, values.password);
+
       } catch (err) {
         helpers.setStatus({ success: false });
         helpers.setErrors({ submit: err.message });
@@ -71,7 +124,7 @@ const Page = () => {
     <>
       <Head>
         <title>
-          Login | Devias Kit
+          Login | Teens Ministry
         </title>
       </Head>
       <Box
@@ -99,21 +152,7 @@ const Page = () => {
               <Typography variant="h4">
                 Login
               </Typography>
-              <Typography
-                color="text.secondary"
-                variant="body2"
-              >
-                Don&apos;t have an account?
-                &nbsp;
-                <Link
-                  component={NextLink}
-                  href="/auth/register"
-                  underline="hover"
-                  variant="subtitle2"
-                >
-                  Register
-                </Link>
-              </Typography>
+              
             </Stack>
             <Tabs
               onChange={handleMethodChange}
@@ -124,16 +163,10 @@ const Page = () => {
                 label="Email"
                 value="email"
               />
-              <Tab
-                label="Phone Number"
-                value="phoneNumber"
-              />
+        
             </Tabs>
             {method === 'email' && (
-              <form
-                noValidate
-                onSubmit={formik.handleSubmit}
-              >
+              <form noValidate onSubmit={formik.handleSubmit}>
                 <Stack spacing={3}>
                   <TextField
                     error={!!(formik.touched.email && formik.errors.email)}
@@ -158,9 +191,9 @@ const Page = () => {
                     value={formik.values.password}
                   />
                 </Stack>
-                <FormHelperText sx={{ mt: 1 }}>
+                {/* <FormHelperText sx={{ mt: 1 }}>
                   Optionally you can skip.
-                </FormHelperText>
+                </FormHelperText> */}
                 {formik.errors.submit && (
                   <Typography
                     color="error"
@@ -170,47 +203,16 @@ const Page = () => {
                     {formik.errors.submit}
                   </Typography>
                 )}
-                <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  type="submit"
-                  variant="contained"
-                >
-                  Continue
+                <Button fullWidth size="large" sx={{ mt: 3 }} type="submit" variant="contained" >
+                  Log In
                 </Button>
-                <Button
-                  fullWidth
-                  size="large"
-                  sx={{ mt: 3 }}
-                  onClick={handleSkip}
-                >
-                  Skip authentication
-                </Button>
-                <Alert
-                  color="primary"
-                  severity="info"
-                  sx={{ mt: 3 }}
-                >
-                  <div>
-                    You can use <b>demo@devias.io</b> and password <b>Password123!</b>
-                  </div>
+                
+                <Alert color="primary" severity="info" sx={{ mt: 3 }}>
+                  <div>Loveworld Teens Ministry</div>
                 </Alert>
               </form>
             )}
-            {method === 'phoneNumber' && (
-              <div>
-                <Typography
-                  sx={{ mb: 1 }}
-                  variant="h6"
-                >
-                  Not available in the demo
-                </Typography>
-                <Typography color="text.secondary">
-                  To prevent unnecessary costs we disabled this feature in the demo.
-                </Typography>
-              </div>
-            )}
+            
           </div>
         </Box>
       </Box>

@@ -59,7 +59,7 @@ export const Layout = (props) => {
           lg={6}
           sx={{
             alignItems: 'center',
-            background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #090E23 100%)',
+            background: 'radial-gradient(50% 50% at 50% 50%, #122647 0%, #271E93 100%)',
             color: 'white',
             display: 'flex',
             justifyContent: 'center',
@@ -79,13 +79,13 @@ export const Layout = (props) => {
               }}
               variant="h1"
             >
-              Welcome to{' '}
+              Welcome to Loveworld{' '}
               <Box
                 component="a"
                 sx={{ color: '#15B79E' }}
                 target="_blank"
               >
-                Devias Kit
+                Teens Ministry
               </Box>
             </Typography>
             <Typography
@@ -93,12 +93,11 @@ export const Layout = (props) => {
               sx={{ mb: 3 }}
               variant="subtitle1"
             >
-              A professional kit that comes with ready-to-use MUI components.
+              A Prolific Part of the Loveworld Nation.
             </Typography>
-            <img
-              alt=""
-              src="/assets/auth-illustration.svg"
-            />
+           <Box sx={{width:"100%", display:"flex", justifyContent:"center" }}>
+               <img alt="" src="/assets/landing.png" />
+           </Box>
           </Box>
         </Grid>
       </Grid>

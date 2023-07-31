@@ -2,13 +2,15 @@ import PropTypes from 'prop-types';
 import ArrowPathIcon from '@heroicons/react/24/solid/ArrowPathIcon';
 import ArrowRightIcon from '@heroicons/react/24/solid/ArrowRightIcon';
 import {
+  Box,
   Button,
   Card,
   CardActions,
   CardContent,
   CardHeader,
   Divider,
-  SvgIcon
+  SvgIcon,
+  Typography
 } from '@mui/material';
 import { alpha, useTheme } from '@mui/material/styles';
 import { Chart } from 'src/components/chart';
@@ -94,7 +96,7 @@ const useChartOptions = () => {
     },
     yaxis: {
       labels: {
-        formatter: (value) => (value > 0 ? `${value}K` : `${value}`),
+        formatter: (value) => (`${value}`),
         offsetX: -10,
         style: {
           colors: theme.palette.text.secondary
@@ -104,7 +106,7 @@ const useChartOptions = () => {
   };
 };
 
-export const OverviewSales = (props) => {
+export const OverviewMembershipGrowth = (props) => {
   const { chartSeries, sx } = props;
   const chartOptions = useChartOptions();
 
@@ -112,20 +114,21 @@ export const OverviewSales = (props) => {
     <Card sx={sx}>
       <CardHeader
         action={(
-          <Button
-            color="inherit"
-            size="small"
-            startIcon={(
+          <Button color="inherit" size="small" startIcon={(
               <SvgIcon fontSize="small">
                 <ArrowPathIcon />
               </SvgIcon>
-            )}
-          >
+            )}>
             Sync
           </Button>
         )}
-        title="Sales"
+        title="Zonal Membership Strength Growth"
       />
+      <Box sx={{ mt: 3 }}>
+        
+            <Box sx={{m:3,p:0.5, width:104, height:"21",borderRadius:10, textAlign:"center", backgroundColor:"rgb(99, 102, 241)", fontSize:"10px", color:"white" }}>This Year </Box>
+            <Box sx={{m:3, p:0.5, width:104, height:"21",borderRadius:10,textAlign:"center",  backgroundColor:"rgba(99, 102, 241, 0.25)", fontSize:"10px"}}>Last Year </Box>
+        </Box>
       <CardContent>
         <Chart
           height={350}
@@ -137,7 +140,7 @@ export const OverviewSales = (props) => {
       </CardContent>
       <Divider />
       <CardActions sx={{ justifyContent: 'flex-end' }}>
-        <Button
+        {/* <Button
           color="inherit"
           endIcon={(
             <SvgIcon fontSize="small">
@@ -147,13 +150,13 @@ export const OverviewSales = (props) => {
           size="small"
         >
           Overview
-        </Button>
+        </Button> */}
       </CardActions>
     </Card>
   );
 };
 
-OverviewSales.protoTypes = {
+OverviewMembershipGrowth.protoTypes = {
   chartSeries: PropTypes.array.isRequired,
   sx: PropTypes.object
 };

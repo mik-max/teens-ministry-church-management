@@ -12,7 +12,8 @@ import {
 
 export const SettingsPassword = () => {
   const [values, setValues] = useState({
-    password: '',
+     oldPassword:'',
+    newPassword: '',
     confirm: ''
   });
 
@@ -48,15 +49,23 @@ export const SettingsPassword = () => {
           >
             <TextField
               fullWidth
-              label="Password"
-              name="password"
+              label="Old Password"
+              name="oldPassword"
               onChange={handleChange}
               type="password"
               value={values.password}
             />
             <TextField
               fullWidth
-              label="Password (Confirm)"
+              label="New Password"
+              name="newPassword"
+              onChange={handleChange}
+              type="password"
+              value={values.password}
+            />
+            <TextField
+              fullWidth
+              label="New Password (Confirm)"
               name="confirm"
               onChange={handleChange}
               type="password"

@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import ListBulletIcon from '@heroicons/react/24/solid/ListBulletIcon';
+import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
 import {
   Avatar,
   Box,
@@ -11,7 +11,7 @@ import {
   Typography
 } from '@mui/material';
 
-export const OverviewTasksProgress = (props) => {
+export const OverviewFirstTimers = (props) => {
   const { value, sx } = props;
 
   return (
@@ -29,36 +29,35 @@ export const OverviewTasksProgress = (props) => {
               gutterBottom
               variant="overline"
             >
-              Task Progress
+             Total First Timers
             </Typography>
             <Typography variant="h4">
-              {value}%
+              {value}
             </Typography>
           </Stack>
           <Avatar
             sx={{
-              backgroundColor: 'warning.main',
+              backgroundColor: 'blue',
               height: 56,
               width: 56
             }}
           >
             <SvgIcon>
-              <ListBulletIcon />
+              <UserGroupIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
         <Box sx={{ mt: 3 }}>
-          <LinearProgress
-            value={value}
-            variant="determinate"
-          />
+           <Typography variant="overline"  color="text.secondary" gutterBottom>
+              This Month
+            </Typography>
         </Box>
       </CardContent>
     </Card>
   );
 };
 
-OverviewTasksProgress.propTypes = {
+OverviewFirstTimers.propTypes = {
   value: PropTypes.number.isRequired,
   sx: PropTypes.object
 };

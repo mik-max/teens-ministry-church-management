@@ -1,6 +1,9 @@
-import { createContext, useContext, useEffect, useReducer, useRef } from 'react';
+import { createContext, useContext, useEffect, useReducer, useRef, useState } from 'react';
+import Swal from 'sweetalert2'
+import { useRouter } from 'next/navigation';
 import PropTypes from 'prop-types';
 
+const DEVBASEURL = "https://teens-church-report-api.onrender.com"
 const HANDLERS = {
   INITIALIZE: 'INITIALIZE',
   SIGN_IN: 'SIGN_IN',
@@ -60,9 +63,12 @@ const reducer = (state, action) => (
 export const AuthContext = createContext({ undefined });
 
 export const AuthProvider = (props) => {
-  const { children } = props;
-  const [state, dispatch] = useReducer(reducer, initialState);
-  const initialized = useRef(false);
+     const router = useRouter()
+     const { children } = props;
+     const [state, dispatch] = useReducer(reducer, initialState);
+     const [userData, setUserData] = useState({})
+     const [isLoading, setIsLoading] = useState(false)
+     const initialized = useRef(false);
 
   const initialize = async () => {
     // Prevent from calling twice in development mode with React.StrictMode enabled
@@ -128,9 +134,73 @@ export const AuthProvider = (props) => {
   };
 
   const signIn = async (email, password) => {
-    if (email !== 'demo@devias.io' || password !== 'Password123!') {
-      throw new Error('Please check your email and password');
-    }
+     
+     if(email != ''  && password != ''){
+
+          let payload = {
+               email: email,
+               password: password
+          }
+          fetch(`${DEVBASEURL}/api/v1/user/login`, {
+               method: 'POST',
+               headers: {
+                    'Accept': 'application/json',
+                    'Access-Control-Allow-Origin': '*',
+                    'Content-Type': 'application/json'
+               },
+               body: JSON.stringify(payload)
+          }).then(response => {return response.json()}).then((data) => {
+               console.log(data)
+               if(data.status == 'Ok'){
+                    Swal.fire({
+                         title: 'Success!',
+                         text: data.message,
+                         icon: 'success',
+                         confirmButtonText: 'Thanks'
+                    }).then(() => {
+                         localStorage.setItem('token', data?.data.token);
+                         setUserData(data.data.claims);
+                         localStorage.setItem('claims', JSON.stringify(data.data.claims));
+                         router.push('/')
+                         email = '';  password = '';
+
+                         const user = {
+                              id: '5e86809283e28b96d2d38537',
+                              avatar: '/assets/avatars/avatar-anika-visser.png',
+                              name: 'Anika Visser',
+                              email: 'anika.visser@devias.io'
+                            };
+                        
+                            dispatch({
+                              type: HANDLERS.SIGN_IN,
+                              payload: user
+                            });
+                    })
+
+                 
+               }else{ 
+                    Swal.fire({
+                         title: 'Error!',
+                         text: data.message,
+                         icon: 'error',
+                         confirmButtonText: 'Close'
+                    })
+                    
+               }
+               
+          }).catch(e => {
+               return e.message
+          })
+     }else{
+          Swal.fire({
+               title: 'Incomplete! 😒',
+               text: "Kindly fill out all fields.",
+               icon: 'error',
+               confirmButtonText: 'Ooops 😁'
+          })
+          
+     }
+
 
     try {
       window.sessionStorage.setItem('authenticated', 'true');
@@ -138,17 +208,7 @@ export const AuthProvider = (props) => {
       console.error(err);
     }
 
-    const user = {
-      id: '5e86809283e28b96d2d38537',
-      avatar: '/assets/avatars/avatar-anika-visser.png',
-      name: 'Anika Visser',
-      email: 'anika.visser@devias.io'
-    };
-
-    dispatch({
-      type: HANDLERS.SIGN_IN,
-      payload: user
-    });
+    
   };
 
   const signUp = async (email, name, password) => {
@@ -156,9 +216,14 @@ export const AuthProvider = (props) => {
   };
 
   const signOut = () => {
+     router.push('/auth/login')
+     window.location.href='/auth/login'
     dispatch({
       type: HANDLERS.SIGN_OUT
     });
+    localStorage.removeItem('token');
+    localStorage.removeItem('claims');
+   
   };
 
   return (
@@ -168,7 +233,8 @@ export const AuthProvider = (props) => {
         skip,
         signIn,
         signUp,
-        signOut
+        signOut,
+        userData,
       }}
     >
       {children}

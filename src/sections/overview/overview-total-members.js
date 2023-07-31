@@ -1,12 +1,14 @@
+import { useState } from 'react';
 import PropTypes from 'prop-types';
 import ArrowDownIcon from '@heroicons/react/24/solid/ArrowDownIcon';
 import ArrowUpIcon from '@heroicons/react/24/solid/ArrowUpIcon';
 import UsersIcon from '@heroicons/react/24/solid/UsersIcon';
-import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import { Avatar, Box, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const OverviewTotalCustomers = (props) => {
-  const { difference, positive = false, sx, value } = props;
-
+export const OverviewTotalMembers = (props) => {
+     let claims = JSON.parse(localStorage.getItem('claims'))
+  const { difference, positive = false, sx, value, title, color } = props;
+ const [role, setRole] = useState('superAdmin')
   return (
     <Card sx={sx}>
       <CardContent>
@@ -21,7 +23,7 @@ export const OverviewTotalCustomers = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Customers
+              Total Members
             </Typography>
             <Typography variant="h4">
               {value}
@@ -39,45 +41,18 @@ export const OverviewTotalCustomers = (props) => {
             </SvgIcon>
           </Avatar>
         </Stack>
-        {difference && (
-          <Stack
-            alignItems="center"
-            direction="row"
-            spacing={2}
-            sx={{ mt: 2 }}
-          >
-            <Stack
-              alignItems="center"
-              direction="row"
-              spacing={0.5}
-            >
-              <SvgIcon
-                color={positive ? 'success' : 'error'}
-                fontSize="small"
-              >
-                {positive ? <ArrowUpIcon /> : <ArrowDownIcon />}
-              </SvgIcon>
-              <Typography
-                color={positive ? 'success.main' : 'error.main'}
-                variant="body2"
-              >
-                {difference}%
-              </Typography>
-            </Stack>
-            <Typography
-              color="text.secondary"
-              variant="caption"
-            >
-              Since last month
+        <Box sx={{ mt: 3 }}>
+           <Typography variant="overline"  color="text.secondary" gutterBottom>
+           {claims.role == "Zonal Admin" && 'accross the zone'}
+              {claims.role == "Group Admin" && 'accross the group'}
             </Typography>
-          </Stack>
-        )}
+        </Box>
       </CardContent>
     </Card>
   );
 };
 
-OverviewTotalCustomers.propTypes = {
+OverviewTotalMembers.propTypes = {
   difference: PropTypes.number,
   positive: PropTypes.bool,
   value: PropTypes.string.isRequired,

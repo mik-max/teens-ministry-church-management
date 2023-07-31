@@ -1,8 +1,8 @@
 import PropTypes from 'prop-types';
-import CurrencyDollarIcon from '@heroicons/react/24/solid/CurrencyDollarIcon';
-import { Avatar, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
+import UserGroupIcon from '@heroicons/react/24/solid/UserGroupIcon';
+import { Avatar,Box, Card, CardContent, Stack, SvgIcon, Typography } from '@mui/material';
 
-export const OverviewTotalProfit = (props) => {
+export const OverviewWeeklyFirstTimers = (props) => {
   const { value, sx } = props;
 
   return (
@@ -19,7 +19,7 @@ export const OverviewTotalProfit = (props) => {
               color="text.secondary"
               variant="overline"
             >
-              Total Profit
+              Total First Timers
             </Typography>
             <Typography variant="h4">
               {value}
@@ -33,16 +33,21 @@ export const OverviewTotalProfit = (props) => {
             }}
           >
             <SvgIcon>
-              <CurrencyDollarIcon />
+              <UserGroupIcon />
             </SvgIcon>
           </Avatar>
         </Stack>
+        <Box sx={{ mt: 3 }}>
+           <Typography variant="overline"  color="text.secondary" gutterBottom>
+              This Week
+            </Typography>
+        </Box>
       </CardContent>
     </Card>
   );
 };
 
-OverviewTotalProfit.propTypes = {
+OverviewWeeklyFirstTimers.propTypes = {
   value: PropTypes.string,
   sx: PropTypes.object
 };

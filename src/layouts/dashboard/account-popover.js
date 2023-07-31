@@ -4,18 +4,21 @@ import PropTypes from 'prop-types';
 import { Box, Divider, MenuItem, MenuList, Popover, Typography } from '@mui/material';
 import { useAuth } from 'src/hooks/use-auth';
 
+
 export const AccountPopover = (props) => {
+     let claims = JSON.parse(localStorage.getItem('claims'))
+     const {userData, signOut} = useAuth()
   const { anchorEl, onClose, open } = props;
   const router = useRouter();
-  const auth = useAuth();
+//   const auth = useAuth();
 
   const handleSignOut = useCallback(
     () => {
       onClose?.();
-      auth.signOut();
+      signOut();
       router.push('/auth/login');
     },
-    [onClose, auth, router]
+    [onClose,  router]
   );
 
   return (
@@ -42,7 +45,14 @@ export const AccountPopover = (props) => {
           color="text.secondary"
           variant="body2"
         >
-          Anika Visser
+          Hi {claims.firstName} {claims.lastName}
+        </Typography>
+        <Typography
+          color="text.secondary"
+          variant="body2"
+          marginTop={1}
+        >
+          <b>{claims.role} </b>
         </Typography>
       </Box>
       <Divider />

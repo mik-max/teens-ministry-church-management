@@ -28,14 +28,14 @@ export const Layout = withAuthGuard((props) => {
   const pathname = usePathname();
   const [openNav, setOpenNav] = useState(true);
 
-  useEffect(
-    () => {
-      if (openNav) {
-        setOpenNav(false);
-      }
-    },
-    [pathname, openNav]
-  );
+//   useEffect(
+//     () => {
+//       if (openNav) {
+//         setOpenNav(false);
+//       }
+//     },
+//     [pathname, openNav]
+//   );
 
   return (
     <>

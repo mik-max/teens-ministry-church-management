@@ -31,10 +31,12 @@ const states = [
 ];
 
 export const AccountProfileDetails = () => {
+     let claims = JSON.parse(localStorage.getItem('claims'))
+     console.log(claims)
   const [values, setValues] = useState({
-    firstName: 'Anika',
-    lastName: 'Visser',
-    email: 'demo@devias.io',
+    firstName: claims.firstName,
+    lastName: claims.lastName,
+    email: claims.email,
     phone: '',
     state: 'los-angeles',
     country: 'USA'

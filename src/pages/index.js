@@ -1,111 +1,87 @@
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import { subDays, subHours } from 'date-fns';
 import { Box, Container, Unstable_Grid2 as Grid } from '@mui/material';
 import { Layout as DashboardLayout } from 'src/layouts/dashboard/layout';
-import { OverviewBudget } from 'src/sections/overview/overview-budget';
+import { OverviewChurches } from 'src/sections/overview/overview-churches';
 import { OverviewLatestOrders } from 'src/sections/overview/overview-latest-orders';
 import { OverviewLatestProducts } from 'src/sections/overview/overview-latest-products';
-import { OverviewSales } from 'src/sections/overview/overview-sales';
-import { OverviewTasksProgress } from 'src/sections/overview/overview-tasks-progress';
-import { OverviewTotalCustomers } from 'src/sections/overview/overview-total-customers';
-import { OverviewTotalProfit } from 'src/sections/overview/overview-total-profit';
+import { OverviewMembershipGrowth } from 'src/sections/overview/overview-membership-growth';
+import { OverviewFirstTimers } from 'src/sections/overview/overview-first-timers';
+import { OverviewTotalMembers } from 'src/sections/overview/overview-total-members';
+import { OverviewWeeklyFirstTimers } from 'src/sections/overview/overview-weekly-firstTimers';
 import { OverviewTraffic } from 'src/sections/overview/overview-traffic';
 
 const now = new Date();
+const DEVBASEURL = "https://teens-church-report-api.onrender.com"
 
-const Page = () => (
-  <>
+const Page = () => {
+     let claims = JSON.parse(localStorage.getItem('claims'))
+     console.log(claims)
+     const [totalChurches, setTotalChurches] = useState('')
+     const [totalMembers, setTotalMembers] = useState('')
+     useEffect(() => {
+          fetch(`${DEVBASEURL}/api/v1/churches/analytics?zone=${claims.zone}&role=${claims.role}&group=${claims.group}`).then((response) =>  {return response.json()}).then((data) => {
+               setTotalChurches(data.data.totalChurches)
+               setTotalMembers(data.data.totalMembers)
+               console.log(data)
+          })
+     }, [])
+     
+ return ( <>
     <Head>
       <title>
-        Overview | Devias Kit
+        Dashboard | Teens Ministry
       </title>
     </Head>
     <Box
       component="main"
-      sx={{
-        flexGrow: 1,
-        py: 8
-      }}
-    >
+      sx={{ flexGrow: 1, py: 8}}>
       <Container maxWidth="xl">
         <Grid
           container
           spacing={3}
         >
-          <Grid
-            xs={12}
-            sm={6}
-            lg={3}
-          >
-            <OverviewBudget
-              difference={12}
-              positive
-              sx={{ height: '100%' }}
-              value="$24k"
-            />
+          <Grid xs={12} sm={6} lg={3} >
+            <OverviewChurches difference={12} positive sx={{ height: '100%' }} value={totalChurches?.toString()} />
           </Grid>
-          <Grid
-            xs={12}
-            sm={6}
-            lg={3}
-          >
-            <OverviewTotalCustomers
-              difference={16}
-              positive={false}
-              sx={{ height: '100%' }}
-              value="1.6k"
-            />
+     
+          <Grid xs={12} sm={6} lg={3} >
+            <OverviewTotalMembers difference={16} positive={false} sx={{ height: '100%' }} value={totalMembers?.toString()} />
           </Grid>
-          <Grid
-            xs={12}
-            sm={6}
-            lg={3}
-          >
-            <OverviewTasksProgress
-              sx={{ height: '100%' }}
-              value={75.5}
-            />
+          <Grid xs={12} sm={6} lg={3}>
+            <OverviewWeeklyFirstTimers sx={{ height: '100%' }} value="100"/>
           </Grid>
-          <Grid
-            xs={12}
-            sm={6}
-            lg={3}
-          >
-            <OverviewTotalProfit
-              sx={{ height: '100%' }}
-              value="$15k"
-            />
+          <Grid xs={12} sm={6} lg={3} >
+            <OverviewFirstTimers sx={{ height: '100%' }} value={755} />
           </Grid>
+     
           <Grid
             xs={12}
-            lg={8}
+            lg={12}
           >
-            <OverviewSales
+            <OverviewMembershipGrowth
               chartSeries={[
-                {
-                  name: 'This year',
-                  data: [18, 16, 5, 8, 3, 14, 14, 16, 17, 19, 18, 20]
-                },
-                {
-                  name: 'Last year',
-                  data: [12, 11, 4, 6, 2, 9, 9, 10, 11, 12, 13, 13]
-                }
+               {
+                    name: 'This year',
+                    data: [184, 186, 500, 400, 300, 1400, 149, 1600, 170, 1900, 1886, 2000]
+                  },
+                  {
+                    name: 'Last year',
+                    data: [102, 110, 440, 596, 204, 109, 570, 810, 1100, 124, 163, 1380]
+                  }
               ]}
               sx={{ height: '100%' }}
             />
           </Grid>
-          <Grid
-            xs={12}
-            md={6}
-            lg={4}
-          >
+          {/* <Grid xs={12} md={6} lg={4}>
             <OverviewTraffic
               chartSeries={[63, 15, 22]}
               labels={['Desktop', 'Tablet', 'Phone']}
               sx={{ height: '100%' }}
             />
-          </Grid>
-          <Grid
+          </Grid> */}
+          {/* <Grid
             xs={12}
             md={6}
             lg={4}
@@ -216,12 +192,12 @@ const Page = () => (
               ]}
               sx={{ height: '100%' }}
             />
-          </Grid>
+          </Grid> */}
         </Grid>
       </Container>
     </Box>
   </>
-);
+)};
 
 Page.getLayout = (page) => (
   <DashboardLayout>

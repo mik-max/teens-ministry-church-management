@@ -60,7 +60,7 @@ export const TopNav = (props) => {
           >
             {!lgUp && (
               <IconButton onClick={onNavOpen}>
-                <SvgIcon fontSize="small">
+                <SvgIcon fontSize="small" >
                   <Bars3Icon />
                 </SvgIcon>
               </IconButton>

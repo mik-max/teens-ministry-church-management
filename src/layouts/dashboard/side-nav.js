@@ -15,10 +15,11 @@ import {
 } from '@mui/material';
 import { Logo } from 'src/components/logo';
 import { Scrollbar } from 'src/components/scrollbar';
-import { items } from './config';
+import { items, items2 } from './config';
 import { SideNavItem } from './side-nav-item';
 
 export const SideNav = (props) => {
+     let claims = JSON.parse(localStorage.getItem('claims'))
   const { open, onClose } = props;
   const pathname = usePathname();
   const lgUp = useMediaQuery((theme) => theme.breakpoints.up('lg'));
@@ -71,13 +72,13 @@ export const SideNav = (props) => {
                 color="inherit"
                 variant="subtitle1"
               >
-                Devias
+                Loveworld
               </Typography>
               <Typography
                 color="neutral.400"
                 variant="body2"
               >
-                Production
+                Teens Ministry
               </Typography>
             </div>
             <SvgIcon
@@ -106,7 +107,7 @@ export const SideNav = (props) => {
               m: 0
             }}
           >
-            {items.map((item) => {
+            {claims.role=='Zonal Admin' || claims.role=='Group Admin' ? items.map((item) => {
               const active = item.path ? (pathname === item.path) : false;
 
               return (
@@ -120,7 +121,21 @@ export const SideNav = (props) => {
                   title={item.title}
                 />
               );
-            })}
+            }) : items2.map((item) => {
+               const active = item.path ? (pathname === item.path) : false;
+ 
+               return (
+                 <SideNavItem
+                   active={active}
+                   disabled={item.disabled}
+                   external={item.external}
+                   icon={item.icon}
+                   key={item.title}
+                   path={item.path}
+                   title={item.title}
+                 />
+               );
+             }) }
           </Stack>
         </Box>
         <Divider sx={{ borderColor: 'neutral.700' }} />
@@ -131,48 +146,11 @@ export const SideNav = (props) => {
           }}
         >
           <Typography
-            color="neutral.100"
-            variant="subtitle2"
-          >
-            Need more features?
-          </Typography>
-          <Typography
             color="neutral.500"
             variant="body2"
           >
-            Check out our Pro solution template.
+            Loveworld Teens Ministry ©2023 All Rights Reserved
           </Typography>
-          <Box
-            sx={{
-              display: 'flex',
-              mt: 2,
-              mx: 'auto',
-              width: '160px',
-              '& img': {
-                width: '100%'
-              }
-            }}
-          >
-            <img
-              alt="Go to pro"
-              src="/assets/devias-kit-pro.png"
-            />
-          </Box>
-          <Button
-            component="a"
-            endIcon={(
-              <SvgIcon fontSize="small">
-                <ArrowTopRightOnSquareIcon />
-              </SvgIcon>
-            )}
-            fullWidth
-            href="https://material-kit-pro-react.devias.io/"
-            sx={{ mt: 2 }}
-            target="_blank"
-            variant="contained"
-          >
-            Pro Live Preview
-          </Button>
         </Box>
       </Box>
     </Scrollbar>

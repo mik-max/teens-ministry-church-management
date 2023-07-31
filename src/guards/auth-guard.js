@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import { useAuthContext } from 'src/contexts/auth-context';
 
 export const AuthGuard = (props) => {
+     let token = localStorage.getItem('token')
   const { children } = props;
   const router = useRouter();
   const { isAuthenticated } = useAuthContext();
@@ -27,7 +28,7 @@ export const AuthGuard = (props) => {
 
       ignore.current = true;
 
-      if (!isAuthenticated) {
+      if (token === null) {
         console.log('Not authenticated, redirecting');
         router
           .replace({
