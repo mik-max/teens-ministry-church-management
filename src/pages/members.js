@@ -160,7 +160,7 @@ import { useGetUsers } from 'api/users';
 //   }
 // ];
 
-const usemembers = (page, rowsPerPage, data) => {
+const useMembers = (page, rowsPerPage, data) => {
   return useMemo(
     () => {
       return applyPagination(data, page, rowsPerPage);
@@ -169,7 +169,7 @@ const usemembers = (page, rowsPerPage, data) => {
   );
 };
 
-const usememberIds = (members) => {
+const useMembersIds = (members) => {
   return useMemo(
     () => {
       return members?.map((member) => member.id);
@@ -197,8 +197,8 @@ const Page = () => {
      }, [])
 
      const [rowsPerPage, setRowsPerPage] = useState(5);
-     const members = usemembers(page, rowsPerPage, data);
-     const membersIds = usememberIds(members);
+     const members = useMembers(page, rowsPerPage, data);
+     const membersIds = useMembersIds(members);
      const membersSelection = useSelection(membersIds);
   const handlePageChange = useCallback(
     (event, value) => {
