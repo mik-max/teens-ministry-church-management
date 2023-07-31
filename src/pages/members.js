@@ -2,7 +2,6 @@ import { useCallback, useMemo, useState, useEffect } from 'react';
 import Head from 'next/head';
 import { subDays, subHours } from 'date-fns';
 import ArrowDownOnSquareIcon from '@heroicons/react/24/solid/ArrowDownOnSquareIcon';
-import PaperAirPlaneIcon from '@heroicons/react/24/solid/PaperAirplaneIcon';
 import ArrowUpOnSquareIcon from '@heroicons/react/24/solid/ArrowUpOnSquareIcon';
 import PlusIcon from '@heroicons/react/24/solid/PlusIcon';
 import { Box, Button, Container, Stack, SvgIcon, Typography } from '@mui/material';
@@ -264,7 +263,7 @@ const Page = () => {
 
                 {claims.role === 'Zonal Admin'&&<Button endIcon={(
                     <SvgIcon fontSize="small">
-                      <PaperAirPlaneIcon />
+                      <PlusIcon />
                     </SvgIcon>
                   )}
                   variant="contained"
